@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -30,9 +31,9 @@ public class RegisterController {
     @PostMapping("/register")
     public String register(
             @RequestParam(name = "invitationCode") Long invitationCode,
-            @RequestParam(name = "name") String name,
-            @RequestParam(name = "password") String password,
-            @RequestParam(name = "passwordRepeated") String passwordRepeated,
+            @RequestParam String name,
+            @RequestParam String password,
+            @RequestParam String passwordRepeated,
             Model model) {
 
         if (!invitationValidatorService.isValid(invitationCode)) {
@@ -49,7 +50,7 @@ public class RegisterController {
         var user = new User(name, password);
         var errorCode = registrationService.register(user, invitationCode);
 
-        if(errorCode > 0) {
+        if (errorCode > 0) {
             model.addAttribute("errorMessage", "error registering user");
             return "register";
         }

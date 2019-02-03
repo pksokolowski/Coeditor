@@ -1,5 +1,6 @@
 package com.github.pksokolowski.coeditor.security;
 
+import com.github.pksokolowski.coeditor.login.DetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,12 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private DetailsService detailsService;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .inMemoryAuthentication()
-                .withUser("admin") // #2
-                .password("{noop}kamczatkakoloratka")
-                .roles("ADMIN", "USER");
+                .userDetailsService(detailsService)
+                .and()
+                .inMemoryAuthentication();
     }
 
     @Override
