@@ -15,12 +15,12 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @GetMapping(value = {"/login", "/"})
+    @GetMapping(value = {"/loginDeprecated",})
     public String showLoginPage() {
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/loginDeprecated")
     public String handleLoginAttempt(
             @RequestParam(name = "name") String name,
             @RequestParam(name = "password") String password,
