@@ -5,12 +5,13 @@
     <title>Register</title>
 </head>
 <body>
-<form action="/register" method="POST">
+<form th:action="@{/register}" method="POST">
     <p><font color="red">
     <p th:text="${errorMessage}"/></font></p>
     Name: <input type="text" name="name"/>
     password: <input type="password" name="password"/>
     repeat password: <input type="password" name="passwordRepeated"/>
+    <input type="number" name="invitationCode" hidden="true" th:value="${invitationCode}"/>
     <input type="submit"/>
 </form>
 </body>

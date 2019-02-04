@@ -3,6 +3,7 @@ package com.github.pksokolowski.coeditor.register;
 import com.github.pksokolowski.coeditor.model.User;
 import com.github.pksokolowski.coeditor.repository.InvitationsRepository;
 import com.github.pksokolowski.coeditor.repository.UsersRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,10 +13,12 @@ public class RegistrationService {
 
     private UsersRepository usersRepository;
     private InvitationsRepository invitationsRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public RegistrationService(UsersRepository usersRepository, InvitationsRepository invitationsRepository) {
+    public RegistrationService(UsersRepository usersRepository, InvitationsRepository invitationsRepository, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.invitationsRepository = invitationsRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public int register(User user, long invitationCode) {
@@ -29,6 +32,8 @@ public class RegistrationService {
             if (invitation == null) {
                 return 2;
             }
+
+            user.password = passwordEncoder.encode(user.password);
 
             // consume the invitation code and create user, preferably in a single transaction.
             invitationsRepository.deleteById(invitation.id);

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -20,17 +19,20 @@ public class RegisterController {
     }
 
     @GetMapping("/register")
-    public String showRegistrationForm(@RequestParam(name = "invitationCode") Long invitationCode) {
+    public String showRegistrationForm(
+            @RequestParam(name = "invitationCode") Long invitationCode,
+            Model model) {
         if (!invitationValidatorService.isValid(invitationCode)) {
             return "no_permission";
         }
 
+        model.addAttribute("invitationCode", invitationCode);
         return "register";
     }
 
     @PostMapping("/register")
     public String register(
-            @RequestParam(name = "invitationCode") Long invitationCode,
+            @RequestParam Long invitationCode,
             @RequestParam String name,
             @RequestParam String password,
             @RequestParam String passwordRepeated,
@@ -56,6 +58,6 @@ public class RegisterController {
         }
 
         // return to login page so the user can log in now.
-        return "login";
+        return "registered_successfully";
     }
 }
