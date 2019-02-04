@@ -23,7 +23,7 @@ public class RegistrationService {
 
     public int register(User user, long invitationCode) {
         synchronized (lock) {
-            // if user name is not yet taken cool, otherwise return error code indicating unavailable login
+
             if (usersRepository.findByName(user.name) != null) {
                 return 1;
             }
@@ -35,12 +35,10 @@ public class RegistrationService {
 
             user.password = passwordEncoder.encode(user.password);
 
-            // consume the invitation code and create user, preferably in a single transaction.
             invitationsRepository.deleteById(invitation.id);
             usersRepository.save(user);
         }
 
-        // return 0 error code
         return 0;
     }
 }

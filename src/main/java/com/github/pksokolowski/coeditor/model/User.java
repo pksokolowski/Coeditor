@@ -31,7 +31,7 @@ public class User {
         this(0L, name, password, getRoleUser());
     }
 
-    private static ArrayList<String> getRoleUser(){
+    private static ArrayList<String> getRoleUser() {
         var list = new ArrayList<String>(1);
         list.add(("USER"));
         return list;

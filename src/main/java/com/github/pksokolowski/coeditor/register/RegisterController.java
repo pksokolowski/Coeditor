@@ -42,13 +42,11 @@ public class RegisterController {
             return "no_permission";
         }
 
-        // check if password is same in both inputs
         if (!password.equals(passwordRepeated)) {
             model.addAttribute("errorMessage", "Password repeated incorrectly");
             return "register";
         }
 
-        // register the user and invalidate the invitation code single use only.
         var user = new User(name, password);
         var errorCode = registrationService.register(user, invitationCode);
 
@@ -57,7 +55,6 @@ public class RegisterController {
             return "register";
         }
 
-        // return to login page so the user can log in now.
         return "registered_successfully";
     }
 }

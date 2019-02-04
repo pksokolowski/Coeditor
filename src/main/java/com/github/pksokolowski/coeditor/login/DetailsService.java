@@ -30,15 +30,21 @@ public class DetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(
                     "No user found with username: " + name);
         }
+
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
-        return new org.springframework.security.core.userdetails.User
-                (user.name,
-                        user.password, enabled, accountNonExpired,
-                        credentialsNonExpired, accountNonLocked,
-                        getAuthorities(user.roles));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.name,
+                user.password,
+                enabled,
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
+                getAuthorities(user.roles)
+        );
     }
 
     private static List<GrantedAuthority> getAuthorities(List<String> roles) {
