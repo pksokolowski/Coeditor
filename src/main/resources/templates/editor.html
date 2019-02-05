@@ -2,10 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/editor.css"/>
 </head>
-<p th:text="'Hello, '" />
 <a href="/logout">log out</a>
 <br>
+<div class="row">
+    <div class="column" style="background-color:#aaa;">
+        <h3>Documents</h3>
+        <table>
+            <thead>
+            <tr>
+                <th> Title </th>
+                <th> Last modified </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${docs.empty}">
+                <td colspan="2"> no documents </td>
+            </tr>
+            <tr th:each="doc : ${docs}">
+                <td><span th:text="${doc.title}"> Some title </span></td>
+                <td><span th:text="${doc.lastModified}"> 00:00 00.00.0000 </span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="wideColumn" style="background-color:#bbb;">
+        <h2 th:text = "${title}">some title</h2>
+        <textarea rows="30" th:text="${content}"/>
+    </div>
+    <div class="column" style="background-color:#ccc;">
+        <h3>Active invitations</h3>
+        <p>Some text..</p>
+    </div>
+</div>
 </body>
 </html>
