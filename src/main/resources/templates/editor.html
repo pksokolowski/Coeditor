@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/editor.css"/>
+    <script rel="script" type="text/javascript" src="/js/timeHelper.js"></script>
 </head>
 <a href="/logout">log out</a>
 <br>
@@ -28,7 +29,7 @@
             </tr>
             <tr th:each="doc : ${docs}">
                 <td><span th:text="${doc.title}"> Some title </span></td>
-                <td><span th:text="${doc.lastModified}"> 00:00 00.00.0000 </span></td>
+                <td><script th:inline="javascript"> document.write(getTimeStamp(/*[[${doc.lastModified}]]*/)); </script></td>
             </tr>
             </tbody>
         </table>
