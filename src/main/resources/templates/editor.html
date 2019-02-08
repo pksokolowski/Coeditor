@@ -28,7 +28,7 @@
                 <td colspan="2"> no documents </td>
             </tr>
             <tr th:each="doc : ${docs}">
-                <td><span th:text="${doc.title}"> Some title </span></td>
+                <td><a th:href="@{ '/document/' + ${doc.id} }"><span th:text="${doc.title}"> doc title </span></a></td>
                 <td><script th:inline="javascript"> document.write(getTimeStamp(/*[[${doc.lastModified}]]*/)); </script></td>
             </tr>
             </tbody>
