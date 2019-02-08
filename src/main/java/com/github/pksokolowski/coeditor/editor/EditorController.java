@@ -8,6 +8,7 @@ import com.github.pksokolowski.coeditor.utils.TimeHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +26,22 @@ public class EditorController {
     @GetMapping("/")
     public String getEditorPage(Model model) {
         fillModelWithData(model);
+        return "editor";
+    }
+
+    @GetMapping("/document/{documentId}")
+    public String getEditorPage(
+            @PathVariable Long documentId,
+            Model model) {
+        fillModelWithData(model);
+
+        final Document docToOpen = documentsRepository.findById(documentId)
+                .orElse(null);
+        if(docToOpen == null) return "editor";
+
+        model.addAttribute("title", docToOpen.title);
+        model.addAttribute("content", docToOpen.content);
+
         return "editor";
     }
 
