@@ -12,7 +12,7 @@
 <div class="row">
     <div class="column" style="background-color:#aaa;">
         <h3>Documents</h3>
-        <form action="#" th:action="@{/}" method="POST">
+        <form action="#" th:action="@{/create}" method="POST">
             <input type="text" name="title">
             <input type="submit" value="create"/>
         </form>
@@ -36,7 +36,12 @@
     </div>
     <div class="wideColumn" style="background-color:#bbb;">
         <h2 th:text = "${title}">some title</h2>
-        <textarea rows="30" th:text="${content}"/>
+        <form action="#" th:action="@{/save}" method="POST">
+            <input th:if="${doc != null}" type="number" name="documentId" hidden="true" th:value="${doc.id}"/>
+            <textarea class="wideTextArea" name="documentText" rows="30" th:text="${content}"></textarea>
+            <br>
+            <input th:if="${doc != null}" type="submit" value="save"/>
+        </form>
     </div>
     <div class="column" style="background-color:#ccc;">
         <h3>Active invitations</h3>

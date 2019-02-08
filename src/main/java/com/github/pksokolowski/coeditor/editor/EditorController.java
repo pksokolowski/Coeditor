@@ -39,13 +39,14 @@ public class EditorController {
                 .orElse(null);
         if(docToOpen == null) return "editor";
 
+        model.addAttribute("doc", docToOpen);
         model.addAttribute("title", docToOpen.title);
         model.addAttribute("content", docToOpen.content);
 
         return "editor";
     }
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public String createNewDocument(
             @RequestParam String title,
             @CurrentUser org.springframework.security.core.userdetails.User user,
@@ -55,10 +56,24 @@ public class EditorController {
         final var authorId = userFromDb.id;
         final var timeNow = TimeHelper.getTimeNow();
         final var document = new Document(title, "", timeNow, authorId);
-        documentsRepository.save(document);
+        var savedDoc = documentsRepository.save(document);
 
-        fillModelWithData(model);
-        return "redirect:/";
+        return "redirect:/document/"+savedDoc.id.toString();
+    }
+
+    @PostMapping("/save")
+    public String saveChangesToADocument(
+            @RequestParam Long documentId,
+            @RequestParam String documentText,
+            Model model) {
+        final Document docFromDb = documentsRepository.findById(documentId)
+                .orElse(null);
+        if(docFromDb == null) return "no_permission";
+
+        docFromDb.content = documentText;
+        documentsRepository.save(docFromDb);
+
+        return "redirect:/document/"+documentId.toString();
     }
 
     private void fillModelWithData(Model model) {
