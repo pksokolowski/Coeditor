@@ -1,5 +1,6 @@
 package com.github.pksokolowski.coeditor.register;
 
+import com.github.pksokolowski.coeditor.invitations.InvitationValidatorService;
 import com.github.pksokolowski.coeditor.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

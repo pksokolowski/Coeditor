@@ -1,4 +1,4 @@
-package com.github.pksokolowski.coeditor.register;
+package com.github.pksokolowski.coeditor.invitations;
 
 import com.github.pksokolowski.coeditor.repository.InvitationsRepository;
 import org.springframework.stereotype.Service;
