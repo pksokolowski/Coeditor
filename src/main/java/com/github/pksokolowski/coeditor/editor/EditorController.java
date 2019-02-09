@@ -1,7 +1,9 @@
 package com.github.pksokolowski.coeditor.editor;
 
+import com.github.pksokolowski.coeditor.invitations.InvitationGeneratorService;
 import com.github.pksokolowski.coeditor.model.Document;
 import com.github.pksokolowski.coeditor.repository.DocumentsRepository;
+import com.github.pksokolowski.coeditor.repository.InvitationsRepository;
 import com.github.pksokolowski.coeditor.repository.UsersRepository;
 import com.github.pksokolowski.coeditor.security.CurrentUser;
 import com.github.pksokolowski.coeditor.utils.TimeHelper;
@@ -15,11 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EditorController {
 
+    private InvitationGeneratorService invitationGeneratorService;
     private DocumentsRepository documentsRepository;
+    private InvitationsRepository invitationsRepository;
     private UsersRepository usersRepository;
 
-    public EditorController(DocumentsRepository documentsRepository, UsersRepository usersRepository) {
+    public EditorController(InvitationGeneratorService invitationGeneratorService,
+                            DocumentsRepository documentsRepository,
+                            InvitationsRepository invitationsRepository,
+                            UsersRepository usersRepository) {
+        this.invitationGeneratorService = invitationGeneratorService;
         this.documentsRepository = documentsRepository;
+        this.invitationsRepository = invitationsRepository;
         this.usersRepository = usersRepository;
     }
 
@@ -76,8 +85,25 @@ public class EditorController {
         return "redirect:/document/"+documentId.toString();
     }
 
+    @PostMapping("/invite")
+    public String createNewInvitation(
+            @CurrentUser org.springframework.security.core.userdetails.User user,
+            Model model) {
+        final var issuer = usersRepository.findByName(user.getUsername());
+        final var invitation = invitationGeneratorService.generate(issuer);
+
+        if(invitation == null) {
+            fillModelWithData(model);
+            model.addAttribute("invitationError", "Invitation creation failed, please try again");
+            return "editor";
+        }
+        return "redirect:/register/?invitationCode=" + invitation.code;
+    }
+
     private void fillModelWithData(Model model) {
         final var docs = documentsRepository.findAll();
+        final var invitations = invitationsRepository.findAll();
         model.addAttribute("docs", docs);
+        model.addAttribute("invitations", invitations);
     }
 }

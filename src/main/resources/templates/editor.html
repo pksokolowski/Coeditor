@@ -45,7 +45,25 @@
     </div>
     <div class="column" style="background-color:#ccc;">
         <h3>Active invitations</h3>
-        <p>Some text..</p>
+        <font color="red" th:text="${invitationError}"></font>
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${invitations.empty}">
+                <td colspan="2"> no pending invitations </td>
+            </tr>
+            <tr th:each="inv : ${invitations}">
+                <td><a th:href="@{ '/register?invitationCode=' + ${inv.code} }"> invitation link </a></td>
+            </tr>
+            </tbody>
+        </table>
+        <form action="#" th:action="@{/invite}" method="POST">
+            <input type="submit" value="invite"/>
+        </form>
     </div>
 </div>
 </body>
