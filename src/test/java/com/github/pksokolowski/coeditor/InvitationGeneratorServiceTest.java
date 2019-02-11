@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -34,13 +34,13 @@ public class InvitationGeneratorServiceTest {
 
     private User user;
 
-    private List<Invitation> existingInvitations = new ArrayList<>();
+    private HashSet<Long> existingCodes = new HashSet<>();
 
     private Long lastIdGenerated = 0L;
 
     @Before
     public void setup() {
-        when(invitationsRepository.findAll()).thenReturn(existingInvitations);
+        when(invitationsRepository.findAllCodes()).thenReturn(existingCodes);
         when(invitationsRepository.save(any())).then(arg -> {
             Invitation inv = arg.getArgument(0);
             inv.id = ++lastIdGenerated;
@@ -62,7 +62,7 @@ public class InvitationGeneratorServiceTest {
 
     @Test
     public void returnsNullWhenCannotFindUniqueCode() {
-        existingInvitations.add(new Invitation(1L, 1L, 4L));
+        existingCodes.add(4L);
         when(secureRandom.nextLong()).thenReturn(4L);
         var invitation = invitationGeneratorService.generate(user);
 

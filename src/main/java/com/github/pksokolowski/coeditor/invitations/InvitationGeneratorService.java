@@ -6,7 +6,6 @@ import com.github.pksokolowski.coeditor.repository.InvitationsRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.HashSet;
 
 @Service
 public class InvitationGeneratorService {
@@ -27,21 +26,18 @@ public class InvitationGeneratorService {
      * @return null if no invitation were created, otherwise an invitation
      */
     public Invitation generate(User issuer) {
-        final var invitations = invitationsRepository.findAll();
+        var invitationCode = pickUniqueCode();
+        if (invitationCode == null) return null;
 
-        final var existingCodes = new HashSet<Long>();
-        for (Invitation inv : invitations) {
-            existingCodes.add(inv.code);
-        }
+        final var invitation = new Invitation(issuer.id, invitationCode);
+        return invitationsRepository.save(invitation);
+    }
 
-        for (int i = 0; i < 100; i++) {
-            final var candidate = secureRandom.nextLong();
-            if (existingCodes.contains(candidate)) continue;
-
-            final var invitation = new Invitation(issuer.id, candidate);
-            return invitationsRepository.save(invitation);
-        }
-        return null;
+    private Long pickUniqueCode() {
+        final var existingCodes = invitationsRepository.findAllCodes();
+        final var candidate = secureRandom.nextLong();
+        if (existingCodes.contains(candidate)) return null;
+        return candidate;
     }
 
 }
