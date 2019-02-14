@@ -17,13 +17,8 @@ public class Invitation {
     public long issuerId;
     public long code;
 
-    public Invitation(long id, long issuerId, long code) {
-        this.id = id;
+    public Invitation(long issuerId, long code) {
         this.issuerId = issuerId;
         this.code = code;
-    }
-
-    public Invitation(long issuerId, long code) {
-        this(0L, issuerId, code);
     }
 }
