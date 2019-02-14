@@ -13,17 +13,17 @@ import static javax.persistence.GenerationType.AUTO;
 public class Invitation {
     @Id
     @GeneratedValue(strategy = AUTO)
-    public Long id;
-    public Long issuerId;
-    public Long code;
+    public long id;
+    public long issuerId;
+    public long code;
 
-    public Invitation(Long id, Long issuerId, Long code) {
+    public Invitation(long id, long issuerId, long code) {
         this.id = id;
         this.issuerId = issuerId;
         this.code = code;
     }
 
-    public Invitation(Long issuerId, Long code) {
+    public Invitation(long issuerId, long code) {
         this(0L, issuerId, code);
     }
 }
